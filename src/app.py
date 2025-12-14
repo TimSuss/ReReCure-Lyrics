@@ -1,5 +1,6 @@
 """Main application logic for the lyrics display system."""
 import curses
+import time
 from pathlib import Path
 from typing import Optional
 from .playlist import Playlist
@@ -27,6 +28,7 @@ class LyricsApp:
         self.footswitch_handler: Optional[FootswitchHandler] = None
         self.gpio_pedal_handler: Optional[GPIOPedalHandler] = None
         self.running = False
+        self.needs_render = True
 
         # Initialize with the first song
         self._load_current_song()
@@ -43,11 +45,13 @@ class LyricsApp:
         if self.page_navigator.can_go_forward():
             # Move to next page in current song
             self.page_navigator.next_page()
+            self.needs_render = True
         else:
             # At the end of current song, move to next song
             if self.playlist.has_next_song():
                 self.playlist.next_song()
                 self._load_current_song()
+                self.needs_render = True
                 if self.display:
                     self.display.show_message("Next Song", duration_ms=500)
 
@@ -56,6 +60,7 @@ class LyricsApp:
         if self.page_navigator.can_go_backward():
             # Move to previous page in current song
             self.page_navigator.previous_page()
+            self.needs_render = True
         else:
             # At the beginning of current song, move to previous song
             if self.playlist.has_previous_song():
@@ -64,6 +69,7 @@ class LyricsApp:
                 # Go to the end of the previous song
                 while self.page_navigator.can_go_forward():
                     self.page_navigator.next_page()
+                self.needs_render = True
                 if self.display:
                     self.display.show_message("Previous Song", duration_ms=500)
 
@@ -144,8 +150,13 @@ class LyricsApp:
             self._process_footswitch_input()
             self._process_gpio_pedal_input()
 
-            # Render current state
-            self._render()
+            # Only render if something changed
+            if self.needs_render:
+                self._render()
+                self.needs_render = False
+
+            # Small sleep to prevent CPU spinning and reduce flashing
+            time.sleep(0.05)  # 50ms = ~20 updates per second max
 
     def run(self, footswitch_device: Optional[str] = None, use_gpio: bool = False):
         """

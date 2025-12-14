@@ -182,16 +182,16 @@ class FootswitchHandler:
 class GPIOPedalHandler:
     """Handles GPIO-based pedal board input on Raspberry Pi."""
 
-    def __init__(self, forward_pin: int = 17, backward_pin: int = 27,
-                 forward_led_pin: int = 22, backward_led_pin: int = 23):
+    def __init__(self, forward_pin: int = 27, backward_pin: int = 17,
+                 forward_led_pin: int = 23, backward_led_pin: int = 22):
         """
         Initialize GPIO pedal handler.
 
         Args:
-            forward_pin: GPIO pin for forward button (default: 17)
-            backward_pin: GPIO pin for backward button (default: 27)
-            forward_led_pin: GPIO pin for forward LED (default: 22)
-            backward_led_pin: GPIO pin for backward LED (default: 23)
+            forward_pin: GPIO pin for forward button (default: 27)
+            backward_pin: GPIO pin for backward button (default: 17)
+            forward_led_pin: GPIO pin for forward LED (default: 23)
+            backward_led_pin: GPIO pin for backward LED (default: 22)
         """
         self.enabled = False
         self.forward_btn = None
