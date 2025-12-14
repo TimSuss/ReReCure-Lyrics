@@ -1,0 +1,16 @@
+{
+  "songs": [
+    {
+      "title": "Amazing Grace",
+      "lyrics_file": "lyrics/amazing_grace.txt"
+    },
+    {
+      "title": "Hallelujah",
+      "lyrics_file": "lyrics/hallelujah.txt"
+    },
+    {
+      "title": "Imagine",
+      "lyrics_file": "lyrics/imagine.txt"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+# Core dependencies
+# Note: curses is built into Python on Linux/Mac
+# On Windows, you'll need windows-curses
+windows-curses; platform_system == "Windows"
+
+# Footswitch support (Linux only)
+evdev; platform_system == "Linux"
+
+# GPIO pedal board support (Raspberry Pi only)
+gpiozero; platform_system == "Linux"
